@@ -1,0 +1,24 @@
+{
+  "name": "wps-cli",
+  "version": "1.0.2",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "wps-cli": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.17.1",
+    "download-git-repo": "^1.1.0",
+    "figlet": "^1.2.0",
+    "inquirer": "^6.2.0",
+    "ora": "^3.0.0",
+    "shelljs": "^0.8.2"
+  }
+}
