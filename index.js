@@ -36,9 +36,6 @@ commander.parse(process.argv);
 
 //下载模板逻辑实现
 function downloadTemplate(dir){
-    if(isReplace && existName!=''){//如果项目已存在则进行项目备份
-        shelljs.mv(existName,'/'+backUpName+'/');
-    }
     const loadingCli = ora(chalk.gray(`Loading ${dir},请稍等...\r\n`)).start();
     download('github:xw5/devEnv_multipage',dir+'/',(err)=>{
         //删除git配置
@@ -70,30 +67,48 @@ function slectActionBefore(name){
         existName = name;
         backUpName = name+new Date().getTime();
         inquirer.prompt([{
-            type:'confirm',
-            name:'isReplace',
-            message:chalk.bgYellow.red(`${name}已存在，是否替换(原项目备份到磁盘根下的${backUpName}里)？`),
-            default:true
+            type:'list',
+            name:'backupOrReplace',
+            message:chalk.bgYellow.red(`${name}已存在，请选择处理方式？`),
+            choices:[{
+                value:'new',
+                name:'重新输入项目名'
+            },{
+                value:'backup',
+                name:'备份原项目再替换'
+            },{
+                value:'replace',
+                name:'直接替换'
+            }],
+            default:0
         }]).then((replaceanswer)=>{
-            isReplace = replaceanswer.isReplace;
-            if(replaceanswer.isReplace){//如确认要替换就把文件下载到重名的项目下
-                slectAction(name);
-            }else{//如不想替换，则提示重新输入项目名
-                inquirer.prompt([{
-                    type:'input',
-                    name:'rename',
-                    message:'请重新输入项目名：',
-                    default:name,
-                    validate:function(val){
-                        if(val.trim() === ''){
-                           return '项目名不能为空！';
+            switch(replaceanswer.backupOrReplace){
+                case 'new'://修改文件名再下载模板
+                    inquirer.prompt([{
+                        type:'input',
+                        name:'rename',
+                        message:'请重新输入项目名：',
+                        default:name,
+                        validate:function(val){
+                            if(val.trim() === ''){
+                            return '项目名不能为空！';
+                            }
+                            return true;
                         }
-                        return true;
-                    }
-                }]).then(renameanswer=>{
-                    slectActionBefore(renameanswer.rename);
-                    //slectAction(renameanswer.rename)
-                })
+                    }]).then(renameanswer=>{
+                        slectActionBefore(renameanswer.rename);
+                    })
+                    break;
+                case 'backup'://先备份再下载模板
+                    shelljs.mv('-n',existName,backUpName+'/');
+                    console.log(`${existName}项目会备份至${backUpName}文件夹下`);
+                    slectAction(existName);
+                    break;
+                case 'replace'://直接替换原项目
+                    slectAction(existName);
+                    break;
+                default:
+                    break;
             }
         })
     }
@@ -107,10 +122,10 @@ function slectAction(name){
         message:chalk.red.bgYellow('你使用的模块化开发方式?'),
         choices:[{
             value:'amd',
-            name:'使用(AMD)requirejs'
+            name:'使用(AMD)requirejs管理'
         },{
             value:'commonjs',
-            name:'使用(Commonjs)webpack'
+            name:'使用(Commonjs)webpack管理'
         },{
             value:'es6',
             name:'使用es6 Module'
