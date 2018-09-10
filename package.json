@@ -1,6 +1,6 @@
 {
   "name": "wps-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -17,6 +17,7 @@
     "commander": "^2.17.1",
     "download-git-repo": "^1.1.0",
     "figlet": "^1.2.0",
+    "git-down-repo": "^2.4.2",
     "inquirer": "^6.2.0",
     "ora": "^3.0.0",
     "shelljs": "^0.8.2"
