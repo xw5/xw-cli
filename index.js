@@ -5,7 +5,7 @@ const chalk = require('chalk');//命令行样式
 const inquirer = require('inquirer');//命令行选择库
 const ora = require('ora');//命令行loading效果
 const download = require('download-git-repo');//下载库
-const Downloader = require('github-download-directory');
+//const downloadSuper = require('github-download-parts');//下载库，支持下载项目下的文件夹
 const figlet = require('figlet');//输出特殊字符
 
 let isReplace = false;//是否是替换文件状态
@@ -25,25 +25,52 @@ let createCommnader = commander.command('create <project-name>');
 createCommnader.description(chalk.blue('创建开发项目'));
 createCommnader.action((projectName)=>{
     slectActionBefore(projectName);
-})
-
-//设置命令的动作
-// commander.action(() => {
-//     console.log('hello '+commander.name);
-// })
+});
 
 //解析来自process.argv上的数据
 commander.parse(process.argv);
 
 
-Downloader('gulp').then(console.log,console.error);
-
+//如果有name值就输出
+if(commander.name){
+    console.log(commander.name);
+    shelljs.sed('-i','sass',commander.name,'test.js');
+    shelljs.mv('test0.js','test.js');
+}
+//{ jsmodule: 'requirejs', cssmodule: 'less', version: 'vmd5' }
 //下载模板逻辑实现
-function downloadTemplate(dir,answer){
+function downloadTemplate(dir,answers){
     const loadingCli = ora(chalk.gray(`Loading ${dir},请稍等...\r\n`)).start();
     download('github:xw5/devEnv_multipage',dir+'/',(err)=>{
         //删除git配置
         shelljs.rm(dir+'/.gitignore');
+        //css整理
+        answers.cssmodule === 'less' ? shelljs.rm(dir+'/src/sass') : shelljs.rm(dir+'/src/less');
+        //js整理
+        switch(answers.jsmodule){
+            case 'requirejs':
+                shelljs.mv(dir+'/src/js-require',dir+'/src/js');
+                shelljs.rm(dir+'/src/js-es6');
+                shelljs.rm(dir+'/src/js-webpack');
+                shelljs.rm(dir+'/src/index.es6.webpack.html');
+                shelljs.mv(dir+'/src/index.require.html',dir+'/src/index.html');
+                break;
+            case 'webpack':
+                shelljs.mv(dir+'/src/js-webpack',dir+'/src/js');
+                shelljs.rm(dir+'/src/js-require');
+                shelljs.rm(dir+'/src/js-es6');
+                shelljs.rm(dir+'/src/index.require.html');
+                shelljs.mv(dir+'/src/index.es6.webpack.html',dir+'/src/index.html')
+                break;
+            case 'es6':
+                shelljs.mv(dir+'/src/js-es6',dir+'/src/js');
+                shelljs.rm(dir+'/src/js-require');
+                shelljs.rm(dir+'/src/js-webpack');
+                shelljs.rm(dir+'/src/index.require.html');
+                shelljs.mv(dir+'/src/index.es6.webpack.html',dir+'/src/index.html')
+                break;
+        }
+
         figlet('WPS-CLI', function(err,data){
             if(!err){
                 console.log(chalk.green(data));
@@ -125,14 +152,14 @@ function slectAction(name){
         name:'jsmodule',
         message:chalk.red.bgYellow('你使用的模块化开发方式?'),
         choices:[{
-            value:'amd',
+            value:'requirejs',
             name:'使用(AMD)requirejs管理'
         },{
-            value:'commonjs',
+            value:'webpack',
             name:'使用(Commonjs)webpack管理'
         },{
             value:'es6',
-            name:'使用ES6 Module,开启ES6支持'
+            name:'使用es6 Module'
         }],
         default:0
     },{
@@ -143,11 +170,8 @@ function slectAction(name){
             value:'less',
             name:'使用less预处理器管理CSS'
         },{
-            value:'sass',
+            value:'scss',
             name:'使用sass预处理器管理CSS'
-        },{
-            value:'nocss',
-            name:'no，我不需要css预处理器'
         }],
         default:0
     },{
@@ -156,7 +180,7 @@ function slectAction(name){
         message:chalk.red.bgYellow('你使用的文件版本管理方式？'),
         choices:[{
             value:'vmd5',
-            name:'example.js?v=md5码,加hash值版本管理方式'
+            name:'example.js?v=md5码,加search值版本管理方式'
         },{
             value:'rename',
             name:'example.md5码.js,修改文件名的版本管理方式'
