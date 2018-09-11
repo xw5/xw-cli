@@ -5,6 +5,7 @@ const chalk = require('chalk');//命令行样式
 const inquirer = require('inquirer');//命令行选择库
 const ora = require('ora');//命令行loading效果
 const download = require('download-git-repo');//下载库
+const Downloader = require('github-download-directory');
 const figlet = require('figlet');//输出特殊字符
 
 let isReplace = false;//是否是替换文件状态
@@ -27,15 +28,18 @@ createCommnader.action((projectName)=>{
 })
 
 //设置命令的动作
-commander.action(() => {
-    console.log('hello '+commander.name);
-})
+// commander.action(() => {
+//     console.log('hello '+commander.name);
+// })
 
 //解析来自process.argv上的数据
 commander.parse(process.argv);
 
+
+Downloader('gulp').then(console.log,console.error);
+
 //下载模板逻辑实现
-function downloadTemplate(dir){
+function downloadTemplate(dir,answer){
     const loadingCli = ora(chalk.gray(`Loading ${dir},请稍等...\r\n`)).start();
     download('github:xw5/devEnv_multipage',dir+'/',(err)=>{
         //删除git配置
@@ -128,7 +132,7 @@ function slectAction(name){
             name:'使用(Commonjs)webpack管理'
         },{
             value:'es6',
-            name:'使用es6 Module'
+            name:'使用ES6 Module,开启ES6支持'
         }],
         default:0
     },{
@@ -141,6 +145,9 @@ function slectAction(name){
         },{
             value:'sass',
             name:'使用sass预处理器管理CSS'
+        },{
+            value:'nocss',
+            name:'no，我不需要css预处理器'
         }],
         default:0
     },{
