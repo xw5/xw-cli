@@ -6,11 +6,21 @@
   "bin": {
     "wps-cli": "index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:xw5/wps-cli.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["wps-cli"],
+  "homepage": "https://github.com/xw5/wps-cli",
+  "bugs": "https://github.com/xw5/wps-cli/issues",
+  "author": {
+    "name": "xiewu",
+    "email": "xiewu5550@163.com",
+    "url": "https://github.com/xw5"
+  },
   "license": "ISC",
   "dependencies": {
     "chalk": "^2.4.1",
