@@ -1,10 +1,10 @@
 {
   "name": "wps-cli",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "",
   "main": "index.js",
   "bin": {
-    "wps-cli": "index.js"
+    "wps": "index.js"
   },
   "repository": {
     "type": "git",
@@ -13,7 +13,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["wps-cli"],
+  "keywords": [
+    "wps-cli"
+  ],
   "homepage": "https://github.com/xw5/wps-cli",
   "bugs": "https://github.com/xw5/wps-cli/issues",
   "author": {
