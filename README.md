@@ -22,18 +22,18 @@ Wps CLI是专为wps专题项目搭建的前端项目模板生成工具！
 
 模板生成选项如下：
 
-    >选择模块化开发方式
-    >>使用(AMD)requirejs管理
-    >>使用(Commonjs)webpack管理
-    >>使用es6 module
+    ? 选择模块化开发方式
+    > 使用(AMD)requirejs管理
+    > 使用(Commonjs)webpack管理
+    > 使用es6 module
 
-    >选择CSS预处理
-    >>使用less管理css
-    >>使用sass管理css
+    ? 选择CSS预处理
+    > 使用less管理css
+    > 使用sass管理css
 
-    >选择文件版本管理方式
-    >>example.js?v=md5码，加search值版本管理方式
-    >>example.md5.js码，修改文件名的版本管理方式
+    ? 选择文件版本管理方式
+    > example.js?v=md5码，加search值版本管理方式
+    > example.md5.js码，修改文件名的版本管理方式
 
 模块项目运行步骤：
 
