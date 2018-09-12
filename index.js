@@ -13,7 +13,7 @@ let existName = '';//重复的工程名
 let backUpName = '';//备份的工程名
 
 //设置版本号
-commander.version('v1.0.3','-v,--version');
+commander.version('v1.0.8','-v,--version');
 
 //新增option --name后面的[val]]当前这个选项的参数值 []可选<>必填
 //如果第三个参数为一个函数，会接受来处用户的值并返回一个值做为实际的值
