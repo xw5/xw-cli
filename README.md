@@ -41,5 +41,5 @@ Wps CLI是专为wps专题项目搭建的前端项目模板生成工具！
     cd <project-name>
     npm install         //安装模块
     npm run dev         //走开发流程
-    npm run publish     //走发布流程
+    npm run build      //走发布流程
 ```
