@@ -20,11 +20,11 @@ Wps CLI是专为wps专题项目搭建的前端项目模板生成工具！
 ### 例如
 
 ```
-    wps create project-name
+    wps create project-name [-s]
 ```
-上面的命令会在当前目录下新建一个名为project-name的项目，用户通过选择不同选项，命令会自动从GITHUB下载指定的模板文件。
+上面的命令会在当前目录下新建一个名为project-name的项目，用户通过选择不同选项，命令会自动从GITHUB下载指定的模板文件,当带有-s时，会有如下选项，如不带-s，则只有是否需要html模块化选项。
 
-模板生成选项如下：
+模板生成选项如下
 
     ? 选择模块化开发方式
     > 使用(AMD)requirejs管理
@@ -35,6 +35,8 @@ Wps CLI是专为wps专题项目搭建的前端项目模板生成工具！
     > 使用less管理css
     > 使用sass管理css
 
+    ? 是否需要HTML模块化功能: (Y/n)
+
     ? 选择文件版本管理方式
     > example.js?v=md5码，加search值版本管理方式
     > example.md5.js码，修改文件名的版本管理方式
@@ -44,6 +46,7 @@ Wps CLI是专为wps专题项目搭建的前端项目模板生成工具！
 ```
     cd project-name
     npm install         //安装模块
-    npm run dev         //走开发流程
+    npm run static      //走静态开发流程，通用模板才有
+    npm run dev         //走开发流程，通用模板下是混合开发
     npm run build      //走发布流程
 ```
