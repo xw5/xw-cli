@@ -13,7 +13,7 @@ let existName = '';//重复的工程名
 let backUpName = '';//备份的工程名
 
 //设置版本号
-commander.version('v1.1.1','-v,--version');
+commander.version('v1.1.2','-v,--version');
 
 //新增option --name后面的[val]]当前这个选项的参数值 []可选<>必填
 //如果第三个参数为一个函数，会接受来处用户的值并返回一个值做为实际的值
@@ -56,7 +56,7 @@ function downloadTemplate(dir,answers,gitName){
             }else{
                 shelljs.rm('-rf',dir+'/src/less');
                 writeConfig('less','sass',dir);
-            }
+            };
             //js模块化开发方式配置
             switch(answers.jsmodule){
                 case 'requirejs':
@@ -66,7 +66,16 @@ function downloadTemplate(dir,answers,gitName){
                     shelljs.rm(dir+'/package.es6.json');
                     shelljs.rm(dir+'/webpack.config.es6.js');
                     shelljs.rm(dir+'/src/index.es6.webpack.html');
-                    shelljs.mv(dir+'/src/index.require.html',dir+'/src/index.html');
+                    shelljs.rm(dir+'/src/index.es6.webpack.template.html');
+                    if(answers.template){//html模块化功能配置
+                        shelljs.mv(dir+'/src/index.require.template.html',dir+'/src/index.html');
+                        shelljs.rm(dir+'/src/index.require.html');
+                    }else{
+                        shelljs.mv(dir+'/src/index.require.html',dir+'/src/index.html');
+                        shelljs.rm(dir+'/src/index.require.template.html');
+                        writeConfig('template:true','template:false',dir);
+                        shelljs.rm('-rf',dir+'/src/template');
+                    };
                     break;
                 case 'webpack':
                     shelljs.mv(dir+'/src/js-webpack',dir+'/src/js');
@@ -75,7 +84,16 @@ function downloadTemplate(dir,answers,gitName){
                     shelljs.rm(dir+'/package.es6.json');
                     shelljs.rm(dir+'/webpack.config.es6.js');
                     shelljs.rm(dir+'/src/index.require.html');
-                    shelljs.mv(dir+'/src/index.es6.webpack.html',dir+'/src/index.html');
+                    shelljs.rm(dir+'/src/index.require.template.html');
+                    if(answers.template){//html模块化功能配置
+                        shelljs.mv(dir+'/src/index.es6.webpack.template.html',dir+'/src/index.html');
+                        shelljs.rm(dir+'/src/index.es6.webpack.html');
+                    }else{
+                        shelljs.mv(dir+'/src/index.es6.webpack.html',dir+'/src/index.html');
+                        shelljs.rm(dir+'/src/index.es6.webpack.template.html');
+                        writeConfig('template:true','template:false',dir);
+                        shelljs.rm('-rf',dir+'/src/template');
+                    };
                     writeConfig('requirejs','webpack',dir);
                     break;
                 case 'es6':
@@ -85,14 +103,23 @@ function downloadTemplate(dir,answers,gitName){
                     shelljs.mv(dir+'/package.es6.json',dir+'/package.json');
                     shelljs.mv(dir+'/webpack.config.es6.js',dir+'/webpack.config.js');
                     shelljs.rm(dir+'/src/index.require.html');
-                    shelljs.mv(dir+'/src/index.es6.webpack.html',dir+'/src/index.html');
+                    shelljs.rm(dir+'/src/index.require.template.html');
+                    if(answers.template){//html模块化功能配置
+                        shelljs.mv(dir+'/src/index.es6.webpack.template.html',dir+'/src/index.html');
+                        shelljs.rm(dir+'/src/index.es6.webpack.html');
+                    }else{
+                        shelljs.mv(dir+'/src/index.es6.webpack.html',dir+'/src/index.html');
+                        shelljs.rm(dir+'/src/index.es6.webpack.template.html');
+                        writeConfig('template:true','template:false',dir);
+                        shelljs.rm('-rf',dir+'/src/template');
+                    }
                     writeConfig('requirejs','webpack',dir);
                     break;
-            }
+            };
             //根据选择不同的版本号切换配置文件
             if(answers.version === 'rename'){
                 writeConfig('vmd5','rename',dir);
-            }
+            };
         }else{
             writeConfig('wps_mix',dir,dir);
             if(!answers.template){//如果不需要HTML模块化，则去除不需要相关文件
@@ -101,7 +128,7 @@ function downloadTemplate(dir,answers,gitName){
             }else{
                 shelljs.mv(dir+'/src/index.template.html',dir+'/src/index.html');
                 writeConfig('template:false','template:true',dir);
-            }
+            };
         }
         //项目提示
         figlet('WPS-CLI', function(err,data){
@@ -225,6 +252,11 @@ function slectAction(name){
                 name:'使用sass预处理器管理CSS'
             }],
             default:0
+        },{
+            type:'confirm',
+            name:'template',
+            message:chalk.red.bgYellow('是否需要HTML模块化功能'),
+            default:true
         },{
             type:'list',
             name:'version',
