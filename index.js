@@ -12,8 +12,11 @@ let isReplace = false;
 let existName = '';//重复的工程名
 let backUpName = '';//备份的工程名
 
+//js代码
+let scriptstr ='    <script type="text/javascript">(function(d,c){var e=d.documentElement,b="orientationchange" in window?"orientationchange":"resize",a=function(){var f=e.clientWidth;if(!f){return}f=f>540?540:f;f=f<320?320:f;e.style.fontSize=f/10+"px"};if(!d.addEventListener){return}c.addEventListener(b,a,false);d.addEventListener("DOMContentLoaded",a,false)})(document,window);</script>';
+
 //设置版本号
-commander.version('v1.1.4','-v,--version');
+commander.version('v1.1.5','-v,--version');
 
 //新增option --name后面的[val]]当前这个选项的参数值 []可选<>必填
 //如果第三个参数为一个函数，会接受来处用户的值并返回一个值做为实际的值
@@ -42,6 +45,11 @@ commander.parse(process.argv);
 //下载模板逻辑
 function downloadTemplate(dir,answers,gitName){
     const loadingCli = ora(chalk.gray(`Loading ${dir},请稍等...\r\n`)).start();
+    let config = {
+        html:answers.config.indexOf('include') != -1 ? true : false,
+        rem:answers.config.indexOf('rem') != -1 ? true : false,
+        sprite:answers.config.indexOf('sprite') != -1 ? true : false
+    };
     download('github:xw5/'+gitName,dir+'/',(err)=>{
         if(err){
             console.log('网络繁忙，请稍后再试！');
@@ -120,15 +128,24 @@ function downloadTemplate(dir,answers,gitName){
             if(answers.version === 'rename'){
                 writeConfig('vmd5','rename',dir);
             };
-        }else{
-            writeConfig('wps_mix',dir,dir);
-            if(!answers.template){//如果不需要HTML模块化，则去除不需要相关文件
-                shelljs.rm('-rf',dir+'/src/template');
-                shelljs.rm('-rf',dir+'/src/index.template.html');
-            }else{
+        }else{//通用模板逻辑处理
+            if(config.html){//如果需要HTML模块化
                 shelljs.mv(dir+'/src/index.template.html',dir+'/src/index.html');
                 writeConfig('template:false','template:true',dir);
-            };
+            }else{//如果不需要HTML模块化
+                shelljs.rm('-rf',dir+'/src/template');
+                shelljs.rm('-rf',dir+'/src/index.template.html');
+            }
+            writeConfig('wps_mix',dir,dir);
+        }
+        //集成功能选择
+        if(!config.sprite){//不需要雪碧图生成功能
+            writeConfig('sprite:true','sprite:false',dir);
+        }
+        if(config.rem){//需要支持rem
+            writeConfig('rem:false','rem:true',dir);
+        }else{
+            writeHtml(/<\!-- rem s-->.{1,}<\!-- rem e-->/,'',dir);
         }
         //项目提示
         figlet('WPS-CLI', function(err,data){
@@ -154,6 +171,10 @@ function downloadTemplate(dir,answers,gitName){
 //修改配置文件相关配置参数
 function writeConfig(oldStr,newStr,dir){
     shelljs.sed('-i',oldStr,newStr,dir+'/config/config.js');
+}
+//修改html文件
+function writeHtml(oldStr,newStr,dir){
+    shelljs.sed('-i',oldStr,newStr,dir+'/src/index.html');
 }
 
 //判断文件夹是否存在处理逻辑
@@ -253,10 +274,22 @@ function slectAction(name){
             }],
             default:0
         },{
-            type:'confirm',
-            name:'template',
-            message:chalk.red.bgYellow('是否需要HTML模块化功能'),
-            default:true
+            type:'checkbox',
+            name:'config',
+            message:chalk.red.bgYellow('请选择你需要集成的功能'),
+            choices:[
+                {
+                    value:'include',
+                    name:'html模块化'
+                },{
+                    value:'rem',
+                    name:'集成px转rem功能'
+                },{
+                    value:'sprite',
+                    checked:true,
+                    name:'集成雪碧图合并功能'
+                }
+            ]
         },{
             type:'list',
             name:'version',
@@ -278,11 +311,29 @@ function slectAction(name){
         });
     }else{
         inquirer.prompt([
+            // {
+            //     type:'confirm',
+            //     name:'template',
+            //     message:chalk.red.bgYellow('是否需要HTML模块化功能'),
+            //     default:false
+            // }
             {
-                type:'confirm',
-                name:'template',
-                message:chalk.red.bgYellow('是否需要HTML模块化功能'),
-                default:false
+                type:'checkbox',
+                name:'config',
+                message:chalk.red.bgYellow('请选择你需要集成的功能'),
+                choices:[
+                    {
+                        value:'include',
+                        name:'html模块化'
+                    },{
+                        value:'rem',
+                        name:'集成px转rem功能'
+                    },{
+                        value:'sprite',
+                        checked:true,
+                        name:'集成雪碧图合并功能'
+                    }
+                ]
             }
         ]).then(answers => {
             downloadPro(name,answers,'wps_mix');
