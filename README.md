@@ -1,30 +1,30 @@
-Wps CLI是专为wps专题项目搭建的前端项目模板生成工具！
+Xw CLI是专为平时开发搭建的前端项目模板生成工具！
 
 
 ### 安装
 
-``` javascript
-    npm install -g wps-cli
+``` 
+    npm install -g xw-cli
 ```
 
 ### 使用
 
 ```
-    wps create project-name       //走通用模板模式
-    wps create project-name -s    //走高可配置模式
+    xw create project-name       //走通用模板模式
+    xw create project-name -s    //走高可配置模式
 ```
 说明：
-为适应现项目需求，特提供一个适应当前需求的快速版本，快速版本只需要执行wps create project-nam，再选择是否需要开启HTML模块化,雪碧图合并，px转rem功能就可下载适应当前开发的通用模板，该模板支持less用于CSS模块化,(AMD)require.js用于JS模块化开发，html(@include)模块化，name.ext?v=hash文件版本管理，px转rem,雪碧图生成功能；
-同时也提供一个高度可定制化版本，执行wps create project-name -s,再按控制台选项选择需要的功能即可生成定制化模板，项目支持css模块化less/sass,js模块化AMD(require.js)/(commonjs)webpack/es6 module,版本管理name.ext?v=hash/name.hash.ext切换,是否html模块化支持。
+为适应现项目需求，特提供一个适应当前需求的快速版本，快速版本只需要执行xw create project-nam，再选择是否需要开启HTML模块化,雪碧图合并，px转rem功能就可下载适应当前开发的通用模板，该模板支持less用于CSS模块化,(AMD)require.js用于JS模块化开发，html(@include)模块化，name.ext?v=hash文件版本管理，px转rem,雪碧图生成功能；
+同时也提供一个高度可定制化版本，执行xw create project-name -s,再按控制台选项选择需要的功能即可生成定制化模板，项目支持css模块化less/sass,js模块化AMD(require.js)/(commonjs)webpack/es6 module,版本管理name.ext?v=hash/name.hash.ext切换,是否html模块化支持。
 
 ### 例如
 
 ```
-    wps create project-name [-s]
+    xw create project-name [-s]
 ```
 上面的命令会在当前目录下新建一个名为project-name的项目，用户通过选择不同选项，命令会自动从GITHUB下载指定的模板文件,当带有-s时，会有如下选项，如不带-s，则只有是否需要html模块化选项。
 
-通用模板生成选项如下(wps create project-name)
+通用模板生成选项如下(xw create project-name)
 
     ? 请选择你需要集成的功能
         html模块化
@@ -32,7 +32,7 @@ Wps CLI是专为wps专题项目搭建的前端项目模板生成工具！
         集成雪碧图合并功能
 
 
-高可配置模板生成选项如下(wps create project-name -s)
+高可配置模板生成选项如下(xw create project-name -s)
 
     ? 选择模块化开发方式
     > 使用(AMD)requirejs管理

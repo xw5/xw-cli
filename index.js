@@ -12,11 +12,8 @@ let isReplace = false;
 let existName = '';//重复的工程名
 let backUpName = '';//备份的工程名
 
-//js代码
-let scriptstr ='    <script type="text/javascript">(function(d,c){var e=d.documentElement,b="orientationchange" in window?"orientationchange":"resize",a=function(){var f=e.clientWidth;if(!f){return}f=f>540?540:f;f=f<320?320:f;e.style.fontSize=f/10+"px"};if(!d.addEventListener){return}c.addEventListener(b,a,false);d.addEventListener("DOMContentLoaded",a,false)})(document,window);</script>';
-
 //设置版本号
-commander.version('v1.1.5','-v,--version');
+commander.version('v1.1.6','-v,--version');
 
 //新增option --name后面的[val]]当前这个选项的参数值 []可选<>必填
 //如果第三个参数为一个函数，会接受来处用户的值并返回一个值做为实际的值

@@ -1,23 +1,23 @@
 {
-  "name": "wps-cli",
-  "version": "1.1.5",
+  "name": "xw-cli",
+  "version": "1.1.6",
   "description": "",
   "main": "index.js",
   "bin": {
-    "wps": "index.js"
+    "xw": "index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:xw5/wps-cli.git"
+    "url": "git@github.com:xw5/xw-cli.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "wps-cli"
+    "xw-cli"
   ],
-  "homepage": "https://github.com/xw5/wps-cli",
-  "bugs": "https://github.com/xw5/wps-cli/issues",
+  "homepage": "https://github.com/xw5/xw-cli",
+  "bugs": "https://github.com/xw5/xw-cli/issues",
   "author": {
     "name": "xiewu",
     "email": "xiewu5550@163.com",
