@@ -13,7 +13,7 @@ let existName = '';//重复的工程名
 let backUpName = '';//备份的工程名
 
 //设置版本号
-commander.version('v1.1.6','-v,--version');
+commander.version('v1.1.7','-v,--version');
 
 //新增option --name后面的[val]]当前这个选项的参数值 []可选<>必填
 //如果第三个参数为一个函数，会接受来处用户的值并返回一个值做为实际的值
@@ -133,7 +133,7 @@ function downloadTemplate(dir,answers,gitName){
                 shelljs.rm('-rf',dir+'/src/template');
                 shelljs.rm('-rf',dir+'/src/index.template.html');
             }
-            writeConfig('wps_mix',dir,dir);
+            writeConfig('wx_mix',dir,dir);
         }
         //集成功能选择
         if(!config.sprite){//不需要雪碧图生成功能
@@ -145,7 +145,7 @@ function downloadTemplate(dir,answers,gitName){
             writeHtml(/<\!-- rem s-->.{1,}<\!-- rem e-->/,'',dir);
         }
         //项目提示
-        figlet('WPS-CLI', function(err,data){
+        figlet('XW-CLI', function(err,data){
             if(!err){
                 console.log(chalk.green(data));
             };
